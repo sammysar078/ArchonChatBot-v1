@@ -9,14 +9,20 @@ router = Router()
 
 @router.message()
 async def chat(message: Message):
-    if message.chat.type != "private":
+    # Ignore commands
+    if message.text and message.text.startswith("/"):
         return
 
+    # Register user
     await register_user(message.from_user)
 
-    if not message.text:
-        await message.answer("I can understand text messages for now.")
+    text = message.text or message.caption
+    if not text:
         return
 
-    reply = await generate_reply(message.from_user.id, message.text)
+    try:
+        reply = await generate_reply(message.from_user.id, text)
+    except Exception:
+        reply = "Mujhe AI response generate karne mein problem aa rahi hai. Thodi der baad try karo."
+
     await message.answer(reply)
