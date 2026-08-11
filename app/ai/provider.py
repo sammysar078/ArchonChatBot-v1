@@ -59,7 +59,7 @@ async def generate_private_reply(user_id: int, user_message: str) -> str:
         messages.extend(get_context(user_id))
 
         response = await client.chat.completions.create(
-            model="gpt-4.1-mini",
+            model="gpt-4o-mini",
             messages=messages,
             temperature=0.8,
         )
@@ -70,8 +70,8 @@ async def generate_private_reply(user_id: int, user_message: str) -> str:
 
         return reply
 
-    except Exception:
-        return "AI service se connect nahi ho pa raha. Baad mein dobara try karo."
+    except Exception as e:
+        return f"AI ERROR: {str(e)}"
 
 
 async def generate_group_reply(chat_id: int, user_message: str) -> str:
@@ -88,7 +88,7 @@ async def generate_group_reply(chat_id: int, user_message: str) -> str:
         messages.extend(get_group_context(chat_id))
 
         response = await client.chat.completions.create(
-            model="gpt-4.1-mini",
+            model="gpt-4o-mini",
             messages=messages,
             temperature=0.8,
         )
@@ -99,5 +99,5 @@ async def generate_group_reply(chat_id: int, user_message: str) -> str:
 
         return reply
 
-    except Exception:
-        return "AI service se connect nahi ho pa raha. Baad mein dobara try karo."
+    except Exception as e:
+        return f"AI ERROR: {str(e)}"
