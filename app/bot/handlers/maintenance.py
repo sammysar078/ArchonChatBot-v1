@@ -2,6 +2,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from app.services.logger import log_event
 from app.services.maintenance import (
     is_maintenance,
     set_maintenance,
@@ -26,6 +27,12 @@ async def maintenance_on(message: Message):
         return
 
     set_maintenance(True)
+
+    await log_event(
+        message.bot,
+        f"🛠️ Maintenance enabled by {message.from_user.full_name} ({message.from_user.id})"
+    )
+
     await message.answer("Maintenance mode enabled.")
 
 
@@ -41,6 +48,12 @@ async def maintenance_off(message: Message):
         return
 
     set_maintenance(False)
+
+    await log_event(
+        message.bot,
+        f"✅ Maintenance disabled by {message.from_user.full_name} ({message.from_user.id})"
+    )
+
     await message.answer("Maintenance mode disabled.")
 
 
