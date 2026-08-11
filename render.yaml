@@ -1,1 +1,19 @@
-
+services:
+  - type: web
+    name: archonchatbot-v1
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OWNER_ID
+        sync: false
+      - key: LOGGER_GROUP_ID
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./archon.db
+      - key: REDIS_URL
+        value: redis://localhost:6379/0
