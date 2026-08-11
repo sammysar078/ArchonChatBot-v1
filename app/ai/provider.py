@@ -1,3 +1,5 @@
+import re
+
 from openai import AsyncOpenAI
 
 from app.ai.context import (
@@ -10,10 +12,16 @@ from app.ai.group_context import (
     add_group_user_message,
     get_group_context,
 )
+from app.ai.memory import remember, recall
 from app.ai.prompts import SYSTEM_PROMPT
 from app.config import settings
 
 client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+
+NAME_PATTERNS = [
+    r"mera naam (.+?) hai",
+    r"my name is (.+)",
+]
 
 
 async def generate_reply(user_id: int, user_message: str) -> str:
@@ -21,6 +29,23 @@ async def generate_reply(user_id: int, user_message: str) -> str:
 
 
 async def generate_private_reply(user_id: int, user_message: str) -> str:
+    text = user_message.strip()
+
+    # Remember name
+    for pattern in NAME_PATTERNS:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            name = match.group(1).strip()
+            await remember(user_id, "name", name)
+            return f"Theek hai, main yaad rakhunga ki tumhara naam {name} hai."
+
+    # Recall name
+    if re.search(r"mera naam kya hai|what is my name", text, re.IGNORECASE):
+        name = await recall(user_id, "name")
+        if name:
+            return f"Tumne pehle bataya tha ki tumhara naam {name} hai."
+        return "Tumne abhi tak mujhe apna naam nahi bataya."
+
     if not settings.OPENAI_API_KEY:
         return (
             "OpenAI API key configured nahi hai.\\n"
