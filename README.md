@@ -1,21 +1,30 @@
 # ArchonChatBot v1
 
-Production-style Telegram AI companion bot.
+Production-ready Telegram AI companion bot.
 
-## Features (in progress)
+## Features
 
 - AI Chat (DM + Groups)
+- Mention / Reply / Greeting triggers
 - Multilingual auto-switch
-- Memory
-- Voice STT/TTS
-- Owner/Sudo system
+- Conversation context
+- Persistent memory
+- Voice STT + TTS
+- Owner / Sudo / Permissions
 - Maintenance mode
-- Logger
-- Broadcast
-- Docker + Render deployment
+- Logger group
+- Broadcast system
+- Docker support
+- Render deployment
+- GitHub Actions CI
+
+## Setup
+
+1. Create `.env` from `.env.example`
+2. Fill `BOT_TOKEN`
+3. Fill `OPENAI_API_KEY`
+4. Fill `OWNER_ID`
 
 ## Run
 
-```bash
-python -m app.main
-```
+```bash id=
