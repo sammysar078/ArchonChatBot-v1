@@ -3,26 +3,24 @@ from aiogram import Router
 from .start import router as start_router
 from .chat import router as chat_router
 from .voice import router as voice_router
-from .voice_settings import router as voice_settings_router
 from .memory import router as memory_router
 from .admin import router as admin_router
 from .maintenance import router as maintenance_router
 from .broadcast import router as broadcast_router
 from .group import router as group_router
-from .events import router as events_router
 
 router = Router()
 
-# Commands and specific handlers first
+# Commands first
 router.include_router(start_router)
-router.include_router(voice_settings_router)
 router.include_router(voice_router)
 router.include_router(memory_router)
 router.include_router(admin_router)
 router.include_router(maintenance_router)
 router.include_router(broadcast_router)
-router.include_router(group_router)
-router.include_router(events_router)
 
-# Keep chat LAST so it catches remaining text messages
+# Group handler
+router.include_router(group_router)
+
+# Chat LAST
 router.include_router(chat_router)
